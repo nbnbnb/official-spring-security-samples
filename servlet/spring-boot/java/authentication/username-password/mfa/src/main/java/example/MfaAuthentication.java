@@ -22,6 +22,8 @@ import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.CredentialsContainer;
 
+// 这是一个自定义的 Authentication
+// 第一次登录提交的 Authentication 保存在 first 中
 public class MfaAuthentication extends AbstractAuthenticationToken {
 
     private final Authentication first;
@@ -34,13 +36,11 @@ public class MfaAuthentication extends AbstractAuthenticationToken {
 
     @Override
     public Object getPrincipal() {
-        System.out.println("MfaAuthentication -> getPrincipal");
         return this.first.getPrincipal();
     }
 
     @Override
     public Object getCredentials() {
-        System.out.println("MfaAuthentication -> getCredentials");
         return this.first.getCredentials();
     }
 
@@ -55,6 +55,7 @@ public class MfaAuthentication extends AbstractAuthenticationToken {
     @Override
     public boolean isAuthenticated() {
         System.out.println("MfaAuthentication -> isAuthenticated");
+        // 自定义的 Authentication 总是返回失败
         return false;
     }
 

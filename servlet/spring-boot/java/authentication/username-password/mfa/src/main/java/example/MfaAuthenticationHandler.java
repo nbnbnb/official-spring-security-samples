@@ -44,6 +44,7 @@ public class MfaAuthenticationHandler implements AuthenticationSuccessHandler, A
     private final AuthenticationSuccessHandler successHandler;
 
     public MfaAuthenticationHandler(String url) {
+        // url 在验证成功后执行跳转
         SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler(url);
         successHandler.setAlwaysUseDefaultTargetUrl(true);
         this.successHandler = successHandler;
@@ -54,27 +55,31 @@ public class MfaAuthenticationHandler implements AuthenticationSuccessHandler, A
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
 
+        System.out.println("MfaAuthenticationHandler -> onAuthenticationFailure");
         Authentication anonymous = new AnonymousAuthenticationToken("key", "anonymousUser",
                 AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
-
+        // 如果前一次登录失败了
+        // 将匿名的凭据存储到上下文中
+        // 下个页面提交时，将会读取到此匿名上下文，就不会执行提交操作
         saveMfaAuthentication(request, response, new MfaAuthentication(anonymous));
-        System.out.println("MfaAuthenticationHandler -> onAuthenticationFailure");
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-
-        saveMfaAuthentication(request, response, authentication);
         System.out.println("MfaAuthenticationHandler -> onAuthenticationSuccess");
+        // 登录成功，将凭据保存，继续传递到下一个页面
+        saveMfaAuthentication(request, response, authentication);
     }
 
     private void saveMfaAuthentication(HttpServletRequest request, HttpServletResponse response,
                                        Authentication authentication) throws IOException, ServletException {
 
-        SecurityContextHolder.getContext().setAuthentication(new MfaAuthentication(authentication));
-        this.successHandler.onAuthenticationSuccess(request, response, authentication);
         System.out.println("MfaAuthenticationHandler -> saveMfaAuthentication");
+        // 将凭据信息，保存到上下文中
+        SecurityContextHolder.getContext().setAuthentication(new MfaAuthentication(authentication));
+        // 此时，会执行跳转（因为 successHandler 是一个 SimpleUrlAuthenticationSuccessHandler）
+        this.successHandler.onAuthenticationSuccess(request, response, authentication);
     }
 
 }

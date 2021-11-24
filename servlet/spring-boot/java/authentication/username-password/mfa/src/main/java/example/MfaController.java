@@ -36,94 +36,97 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class MfaController {
 
-	private final MfaService mfaService;
+    private final MfaService mfaService;
 
-	private final BytesEncryptor encryptor;
+    private final BytesEncryptor encryptor;
 
-	private final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-	private final AuthenticationSuccessHandler successHandler;
+    //  SavedRequestAwareAuthenticationSuccessHandler()
+    private final AuthenticationSuccessHandler successHandler;
 
-	private final AuthenticationFailureHandler failureHandler;
+    // SimpleUrlAuthenticationFailureHandler("/login?error")
+    private final AuthenticationFailureHandler failureHandler;
 
-	private final String failedAuthenticationSecret;
+    private final String failedAuthenticationSecret;
 
-	private final String failedAuthenticationSecurityAnswer;
+    private final String failedAuthenticationSecurityAnswer;
 
-	public MfaController(MfaService mfaService, BytesEncryptor encryptor, PasswordEncoder encoder,
-			AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) {
+    public MfaController(MfaService mfaService, BytesEncryptor encryptor, PasswordEncoder encoder,
+                         AuthenticationSuccessHandler successHandler, AuthenticationFailureHandler failureHandler) {
 
-		this.mfaService = mfaService;
-		this.encryptor = encryptor;
-		this.encoder = encoder;
-		this.successHandler = successHandler;
-		this.failureHandler = failureHandler;
+        this.mfaService = mfaService;
+        this.encryptor = encryptor;
+        this.encoder = encoder;
+        this.successHandler = successHandler;
+        this.failureHandler = failureHandler;
 
-		this.failedAuthenticationSecret = randomValue();
-		this.failedAuthenticationSecurityAnswer = this.encoder.encode(randomValue());
-	}
+        this.failedAuthenticationSecret = randomValue();
+        this.failedAuthenticationSecurityAnswer = this.encoder.encode(randomValue());
+    }
 
-	@GetMapping("/second-factor")
-	public String requestSecondFactor() {
-		return "second-factor";
-	}
+    @GetMapping("/second-factor")
+    public String requestSecondFactor() {
+        return "second-factor";
+    }
 
-	@PostMapping("/second-factor")
-	public void processSecondFactor(@RequestParam("code") String code, MfaAuthentication authentication,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		MfaAuthenticationHandler handler = new MfaAuthenticationHandler("/third-factor");
-		String secret = getSecret(authentication);
-		if (this.mfaService.check(secret, code)) {
-			handler.onAuthenticationSuccess(request, response, authentication.getFirst());
-		}
-		else {
-			handler.onAuthenticationFailure(request, response, new BadCredentialsException("bad credentials"));
-		}
-	}
+    @PostMapping("/second-factor")
+    public void processSecondFactor(@RequestParam("code") String code, MfaAuthentication authentication,
+                                    HttpServletRequest request, HttpServletResponse response) throws Exception {
+        MfaAuthenticationHandler customHandler = new MfaAuthenticationHandler("/third-factor");
+        String secret = getSecret(authentication);
+        if (this.mfaService.check(secret, code)) {
+            // 使用自定义的 Handler 处理到下一步
+            customHandler.onAuthenticationSuccess(request, response, authentication.getFirst());
+        } else {
+            customHandler.onAuthenticationFailure(request, response, new BadCredentialsException("bad credentials"));
+        }
+    }
 
-	@GetMapping("/third-factor")
-	public String requestThirdFactor() {
-		return "third-factor";
-	}
+    @GetMapping("/third-factor")
+    public String requestThirdFactor() {
+        return "third-factor";
+    }
 
-	@PostMapping("/third-factor")
-	public void processThirdFactor(@RequestParam("answer") String answer, MfaAuthentication authentication,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String encodedAnswer = getAnswer(authentication);
-		if (this.encoder.matches(answer, encodedAnswer)) {
-			SecurityContextHolder.getContext().setAuthentication(authentication.getFirst());
-			this.successHandler.onAuthenticationSuccess(request, response, authentication.getFirst());
-		}
-		else {
-			this.failureHandler.onAuthenticationFailure(request, response,
-					new BadCredentialsException("bad credentials"));
-		}
-	}
+    @PostMapping("/third-factor")
+    public void processThirdFactor(@RequestParam("answer") String answer, MfaAuthentication authentication,
+                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String encodedAnswer = getAnswer(authentication);
+        if (this.encoder.matches(answer, encodedAnswer)) {
+            SecurityContextHolder.getContext().setAuthentication(authentication.getFirst());
+            // SavedRequestAwareAuthenticationSuccessHandler
+            // 获取第一次提交时的 Authentication： authentication.getFirst()
+            // 然后调用框架的 onAuthenticationSuccess 方法，将整个中断的流程串起来
+            this.successHandler.onAuthenticationSuccess(request, response, authentication.getFirst());
+        } else {
+            this.failureHandler.onAuthenticationFailure(request, response, new BadCredentialsException("bad credentials"));
+        }
+    }
 
-	private String getSecret(MfaAuthentication authentication) throws Exception {
-		if (authentication.getPrincipal() instanceof CustomUser) {
-			CustomUser user = (CustomUser) authentication.getPrincipal();
-			byte[] bytes = Hex.decode(user.getSecret());
-			return new String(this.encryptor.decrypt(bytes));
-		}
-		// earlier factor failed
-		return this.failedAuthenticationSecret;
-	}
+    private String getSecret(MfaAuthentication authentication) throws Exception {
+        if (authentication.getPrincipal() instanceof CustomUser) {
+            CustomUser user = (CustomUser) authentication.getPrincipal();
+            byte[] bytes = Hex.decode(user.getSecret());
+            return new String(this.encryptor.decrypt(bytes));
+        }
+        // earlier factor failed
+        return this.failedAuthenticationSecret;
+    }
 
-	private String getAnswer(MfaAuthentication authentication) {
-		if (authentication.getPrincipal() instanceof CustomUser) {
-			CustomUser user = (CustomUser) authentication.getPrincipal();
-			return user.getAnswer();
-		}
-		// earlier factor failed
-		return this.failedAuthenticationSecurityAnswer;
-	}
+    private String getAnswer(MfaAuthentication authentication) {
+        if (authentication.getPrincipal() instanceof CustomUser) {
+            CustomUser user = (CustomUser) authentication.getPrincipal();
+            return user.getAnswer();
+        }
+        // earlier factor failed
+        return this.failedAuthenticationSecurityAnswer;
+    }
 
-	private static String randomValue() {
-		SecureRandom random = new SecureRandom();
-		byte[] bytes = new byte[20];
-		random.nextBytes(bytes);
-		return new String(Hex.encode(bytes));
-	}
+    private static String randomValue() {
+        SecureRandom random = new SecureRandom();
+        byte[] bytes = new byte[20];
+        random.nextBytes(bytes);
+        return new String(Hex.encode(bytes));
+    }
 
 }

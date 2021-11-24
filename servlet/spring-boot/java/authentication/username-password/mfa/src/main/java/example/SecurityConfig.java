@@ -48,13 +48,11 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(authorize -> authorize
-                                .mvcMatchers("/second-factor", "/third-factor").access(mfaAuthorizationManager)
-                                // 改成都不需要验证
-                                .anyRequest().permitAll()
-                        // TODO: 原始 Demo 是都需要验证，但是会导致 /second-factor 的提交无法到 Controller
-                        //.anyRequest().authenticated()
+                        .mvcMatchers("/second-factor", "/third-factor").access(mfaAuthorizationManager)
+                        .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
+                        // 使用自定义的 Handler 处理到下一步
                         .successHandler(mfaAuthenticationHandler)
                         .failureHandler(mfaAuthenticationHandler)
                 )
