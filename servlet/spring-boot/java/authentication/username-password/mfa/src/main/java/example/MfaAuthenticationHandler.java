@@ -33,7 +33,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 /**
  * An authentication handler that saves an authentication either way.
- *
+ * <p>
  * The reason for this is so that the rest of the factors are collected, even if earlier
  * factors failed.
  *
@@ -41,32 +41,40 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
  */
 public class MfaAuthenticationHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
 
-	private final AuthenticationSuccessHandler successHandler;
+    private final AuthenticationSuccessHandler successHandler;
 
-	public MfaAuthenticationHandler(String url) {
-		SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler(url);
-		successHandler.setAlwaysUseDefaultTargetUrl(true);
-		this.successHandler = successHandler;
-	}
+    public MfaAuthenticationHandler(String url) {
+        SimpleUrlAuthenticationSuccessHandler successHandler = new SimpleUrlAuthenticationSuccessHandler(url);
+        successHandler.setAlwaysUseDefaultTargetUrl(true);
+        this.successHandler = successHandler;
+        System.out.println("MfaAuthenticationHandler -> " + url);
+    }
 
-	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-			AuthenticationException exception) throws IOException, ServletException {
-		Authentication anonymous = new AnonymousAuthenticationToken("key", "anonymousUser",
-				AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
-		saveMfaAuthentication(request, response, new MfaAuthentication(anonymous));
-	}
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+                                        AuthenticationException exception) throws IOException, ServletException {
 
-	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
-		saveMfaAuthentication(request, response, authentication);
-	}
+        Authentication anonymous = new AnonymousAuthenticationToken("key", "anonymousUser",
+                AuthorityUtils.createAuthorityList("ROLE_ANONYMOUS"));
 
-	private void saveMfaAuthentication(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
-		SecurityContextHolder.getContext().setAuthentication(new MfaAuthentication(authentication));
-		this.successHandler.onAuthenticationSuccess(request, response, authentication);
-	}
+        saveMfaAuthentication(request, response, new MfaAuthentication(anonymous));
+        System.out.println("MfaAuthenticationHandler -> onAuthenticationFailure");
+    }
+
+    @Override
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+                                        Authentication authentication) throws IOException, ServletException {
+
+        saveMfaAuthentication(request, response, authentication);
+        System.out.println("MfaAuthenticationHandler -> onAuthenticationSuccess");
+    }
+
+    private void saveMfaAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                       Authentication authentication) throws IOException, ServletException {
+
+        SecurityContextHolder.getContext().setAuthentication(new MfaAuthentication(authentication));
+        this.successHandler.onAuthenticationSuccess(request, response, authentication);
+        System.out.println("MfaAuthenticationHandler -> saveMfaAuthentication");
+    }
 
 }

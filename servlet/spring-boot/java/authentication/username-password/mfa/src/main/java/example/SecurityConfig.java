@@ -40,62 +40,66 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @Configuration
 public class SecurityConfig {
 
-	@Bean
-	SecurityFilterChain web(HttpSecurity http,
-			AuthorizationManager<RequestAuthorizationContext> mfaAuthorizationManager) throws Exception {
-		MfaAuthenticationHandler mfaAuthenticationHandler = new MfaAuthenticationHandler("/second-factor");
-		// @formatter:off
-		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.mvcMatchers("/second-factor", "/third-factor").access(mfaAuthorizationManager)
-				.anyRequest().authenticated()
-			)
-			.formLogin((form) -> form
-				.successHandler(mfaAuthenticationHandler)
-				.failureHandler(mfaAuthenticationHandler)
-			)
-			.exceptionHandling((exceptions) -> exceptions
-				.withObjectPostProcessor(new ObjectPostProcessor<ExceptionTranslationFilter>() {
-					@Override
-					public <O extends ExceptionTranslationFilter> O postProcess(O filter) {
-						filter.setAuthenticationTrustResolver(new MfaTrustResolver());
-						return filter;
-					}
-				})
-			);
-		// @formatter:on
-		return http.build();
-	}
+    @Bean
+    SecurityFilterChain web(HttpSecurity http,
+                            AuthorizationManager<RequestAuthorizationContext> mfaAuthorizationManager) throws Exception {
 
-	@Bean
-	AuthorizationManager<RequestAuthorizationContext> mfaAuthorizationManager() {
-		return (authentication,
-				context) -> new AuthorizationDecision(authentication.get() instanceof MfaAuthentication);
-	}
+        MfaAuthenticationHandler mfaAuthenticationHandler = new MfaAuthenticationHandler("/second-factor");
 
-	// for the second-factor
-	@Bean
-	AesBytesEncryptor encryptor() throws Exception {
-		KeyGenerator generator = KeyGenerator.getInstance("AES");
-		generator.init(128);
-		SecretKey key = generator.generateKey();
-		return new AesBytesEncryptor(key, KeyGenerators.secureRandom(12), AesBytesEncryptor.CipherAlgorithm.GCM);
-	}
+        http
+                .authorizeHttpRequests(authorize -> authorize
+                                .mvcMatchers("/second-factor", "/third-factor").access(mfaAuthorizationManager)
+                                // 改成都不需要验证
+                                .anyRequest().permitAll()
+                        // TODO: 原始 Demo 是都需要验证，但是会导致 /second-factor 的提交无法到 Controller
+                        //.anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .successHandler(mfaAuthenticationHandler)
+                        .failureHandler(mfaAuthenticationHandler)
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .withObjectPostProcessor(new ObjectPostProcessor<ExceptionTranslationFilter>() {
+                            @Override
+                            public <O extends ExceptionTranslationFilter> O postProcess(O filter) {
+                                filter.setAuthenticationTrustResolver(new MfaTrustResolver());
+                                return filter;
+                            }
+                        })
+                );
 
-	// for the third-factor
-	@Bean
-	PasswordEncoder encoder() {
-		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
+        return http.build();
+    }
 
-	@Bean
-	AuthenticationSuccessHandler successHandler() {
-		return new SavedRequestAwareAuthenticationSuccessHandler();
-	}
+    @Bean
+    AuthorizationManager<RequestAuthorizationContext> mfaAuthorizationManager() {
+        return (authentication,
+                context) -> new AuthorizationDecision(authentication.get() instanceof MfaAuthentication);
+    }
 
-	@Bean
-	AuthenticationFailureHandler failureHandler() {
-		return new SimpleUrlAuthenticationFailureHandler("/login?error");
-	}
+    // for the second-factor
+    @Bean
+    AesBytesEncryptor encryptor() throws Exception {
+        KeyGenerator generator = KeyGenerator.getInstance("AES");
+        generator.init(128);
+        SecretKey key = generator.generateKey();
+        return new AesBytesEncryptor(key, KeyGenerators.secureRandom(12), AesBytesEncryptor.CipherAlgorithm.GCM);
+    }
+
+    // for the third-factor
+    @Bean
+    PasswordEncoder encoder() {
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    }
+
+    @Bean
+    AuthenticationSuccessHandler successHandler() {
+        return new SavedRequestAwareAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    AuthenticationFailureHandler failureHandler() {
+        return new SimpleUrlAuthenticationFailureHandler("/login?error");
+    }
 
 }

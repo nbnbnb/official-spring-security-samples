@@ -24,37 +24,43 @@ import org.springframework.security.core.CredentialsContainer;
 
 public class MfaAuthentication extends AbstractAuthenticationToken {
 
-	private final Authentication first;
+    private final Authentication first;
 
-	public MfaAuthentication(Authentication first) {
-		super(Collections.emptyList());
-		this.first = first;
-	}
+    public MfaAuthentication(Authentication first) {
+        super(Collections.emptyList());
+        this.first = first;
+        System.out.println("MfaAuthentication -> ctor");
+    }
 
-	@Override
-	public Object getPrincipal() {
-		return this.first.getPrincipal();
-	}
+    @Override
+    public Object getPrincipal() {
+        System.out.println("MfaAuthentication -> getPrincipal");
+        return this.first.getPrincipal();
+    }
 
-	@Override
-	public Object getCredentials() {
-		return this.first.getCredentials();
-	}
+    @Override
+    public Object getCredentials() {
+        System.out.println("MfaAuthentication -> getCredentials");
+        return this.first.getCredentials();
+    }
 
-	@Override
-	public void eraseCredentials() {
-		if (this.first instanceof CredentialsContainer) {
-			((CredentialsContainer) this.first).eraseCredentials();
-		}
-	}
+    @Override
+    public void eraseCredentials() {
+        System.out.println("MfaAuthentication -> eraseCredentials");
+        if (this.first instanceof CredentialsContainer) {
+            ((CredentialsContainer) this.first).eraseCredentials();
+        }
+    }
 
-	@Override
-	public boolean isAuthenticated() {
-		return false;
-	}
+    @Override
+    public boolean isAuthenticated() {
+        System.out.println("MfaAuthentication -> isAuthenticated");
+        return false;
+    }
 
-	public Authentication getFirst() {
-		return this.first;
-	}
+    public Authentication getFirst() {
+        System.out.println("MfaAuthentication -> getFirst");
+        return this.first;
+    }
 
 }
