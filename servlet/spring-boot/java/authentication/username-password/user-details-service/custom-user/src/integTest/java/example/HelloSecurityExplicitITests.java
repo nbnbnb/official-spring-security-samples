@@ -31,14 +31,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HelloSecurityExplicitITests {
 
-	@Autowired
-	private TestRestTemplate rest;
+    @Autowired
+    private TestRestTemplate rest;
 
-	@Test
-	void login() {
-		CustomUser result = this.rest.withBasicAuth("user@example.com", "password").getForObject("/user",
-				CustomUser.class);
-		assertThat(result.getEmail()).isEqualTo("user@example.com");
-	}
+    @Test
+    void login() {
+        CustomUser result = this.rest.withBasicAuth("user@example.com", "password")
+                .getForObject("/user", CustomUser.class);
+
+        assertThat(result.getEmail()).isEqualTo("user@example.com");
+    }
 
 }
