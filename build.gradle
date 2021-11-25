@@ -5,13 +5,6 @@ plugins {
 }
 
 allprojects {
-	apply plugin: 'checkstyle'
-	apply plugin: 'io.spring.javaformat'
-
-	dependencies {
-		checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:0.0.25"
-	}
-
 	// Ensure every test task has at least a single test
 	tasks.withType(Test).configureEach {
 		afterSuite { desc, result ->
