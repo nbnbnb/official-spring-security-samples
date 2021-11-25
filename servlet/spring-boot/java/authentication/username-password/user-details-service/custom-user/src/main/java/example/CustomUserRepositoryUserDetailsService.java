@@ -27,63 +27,76 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+/**
+ * 实现 UserDetailsService 接口
+ * <p>
+ * loadUserByUsername 通过用户名查询数据库中的 UserDetails
+ */
+
 @Service
 public class CustomUserRepositoryUserDetailsService implements UserDetailsService {
 
-	private final CustomUserRepository userRepository;
+    private final CustomUserRepository userRepository;
 
-	public CustomUserRepositoryUserDetailsService(CustomUserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+    public CustomUserRepositoryUserDetailsService(CustomUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		CustomUser customUser = this.userRepository.findCustomUserByEmail(username);
-		if (customUser == null) {
-			throw new UsernameNotFoundException("username " + username + " is not found");
-		}
-		return new CustomUserDetails(customUser);
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        CustomUser customUser = this.userRepository.findCustomUserByEmail(username);
+        if (customUser == null) {
+            throw new UsernameNotFoundException("username " + username + " is not found");
+        }
+        return new CustomUserDetails(customUser);
+    }
 
-	static final class CustomUserDetails extends CustomUser implements UserDetails {
+    /**
+     * 继承 UserDetails
+     * <p>
+     * 表示一个用户
+     */
+    static final class CustomUserDetails extends CustomUser implements UserDetails {
 
-		private static final List<GrantedAuthority> ROLE_USER = Collections
-				.unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_USER"));
+        private static final List<GrantedAuthority> ROLE_USER = Collections
+                .unmodifiableList(AuthorityUtils.createAuthorityList("ROLE_USER"));
 
-		CustomUserDetails(CustomUser customUser) {
-			super(customUser.getId(), customUser.getEmail(), customUser.getPassword());
-		}
+        CustomUserDetails(CustomUser customUser) {
+            // 注意，此处的 customUser.getPassword() 是通过 BCrypt 算法加密过的
+            // 对比逻辑：用户输入的密码，通过相同的加密方式与数据库中的进行比较
+            super(customUser.getId(), customUser.getEmail(), customUser.getPassword());
+        }
 
-		@Override
-		public Collection<? extends GrantedAuthority> getAuthorities() {
-			return ROLE_USER;
-		}
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return ROLE_USER;
+        }
 
-		@Override
-		public String getUsername() {
-			return getEmail();
-		}
+        @Override
+        public String getUsername() {
+            return getEmail();
+        }
 
-		@Override
-		public boolean isAccountNonExpired() {
-			return true;
-		}
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
 
-		@Override
-		public boolean isAccountNonLocked() {
-			return true;
-		}
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
 
-		@Override
-		public boolean isCredentialsNonExpired() {
-			return true;
-		}
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
 
-		@Override
-		public boolean isEnabled() {
-			return true;
-		}
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
 
-	}
+    }
 
 }
