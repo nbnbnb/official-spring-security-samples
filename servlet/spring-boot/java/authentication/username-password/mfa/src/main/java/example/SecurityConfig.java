@@ -49,6 +49,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .mvcMatchers("/second-factor", "/third-factor").access(mfaAuthorizationManager)
+                        // 由于浏览器会自动加载 favicon.ico，如果不设置允许，将会每次都跳转到登录页面
+                        .mvcMatchers("/favicon.ico").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
