@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
+    // 将登录用户，自动绑定到 CustomUser 上
 	@GetMapping("/user")
 	public CustomUser user(@CurrentUser CustomUser currentUser) {
 		return currentUser;
