@@ -56,13 +56,17 @@ public class LoopbackIpRedirectFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // 将 HTTP 头中的跳转地址 localhost 改为 127.0.0.1
         if (request.getServerName().equals("localhost") && request.getHeader("host") != null) {
             UriComponents uri = UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(request))
                     .host("127.0.0.1").build();
             response.sendRedirect(uri.toUriString());
             return;
         }
+
         filterChain.doFilter(request, response);
+
     }
 
 }

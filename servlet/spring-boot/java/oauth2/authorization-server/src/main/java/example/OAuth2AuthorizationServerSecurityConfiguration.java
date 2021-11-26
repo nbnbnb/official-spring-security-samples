@@ -88,6 +88,12 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
                 .clientId("login-client")
                 .clientSecret("{noop}openid-connect")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                // 授权码（response_type=code）
+                // 最安全的方式
+                // 1，跳转资源服务页面
+                // 2，获取授权码（AUTHORIZATION_CODE）
+                // 3，通过授权码获取 Token
+                // 4，拿到 token 访问资源
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("http://127.0.0.1:8080/login/oauth2/code/login-client")
@@ -96,10 +102,13 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
                 .scope(OidcScopes.PROFILE)
                 .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
                 .build();
+
         RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("messaging-client")
                 .clientSecret("{noop}secret")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+                // 凭证式（grant_type=client_credentials）
+                // 无 UI 界面使用（一般不是用户，而是应用程序）
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
                 .scope("message:read")
                 .scope("message:write")
@@ -111,6 +120,7 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
+
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
 

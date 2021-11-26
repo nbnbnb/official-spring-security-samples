@@ -44,49 +44,49 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(OAuth2LoginController.class)
 public class OAuth2LoginControllerTests {
 
-	@Autowired
-	MockMvc mvc;
+    @Autowired
+    MockMvc mvc;
 
-	@MockBean
-	ClientRegistrationRepository clientRegistrationRepository;
+    @MockBean
+    ClientRegistrationRepository clientRegistrationRepository;
 
-	@Test
-	void rootWhenAuthenticatedReturnsUserAndClient() throws Exception {
-		
-		this.mvc.perform(get("/").with(oauth2Login()))
-			.andExpect(model().attribute("userName", "user"))
-			.andExpect(model().attribute("clientName", "test"))
-			.andExpect(model().attribute("userAttributes", Collections.singletonMap("sub", "user")));
-		
-	}
+    @Test
+    void rootWhenAuthenticatedReturnsUserAndClient() throws Exception {
 
-	@Test
-	void rootWhenOverridingClientRegistrationReturnsAccordingly() throws Exception {
-		
-		ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
-			.authorizationGrantType(AuthorizationGrantType.PASSWORD)
-			.clientId("my-client-id")
-			.clientName("my-client-name")
-			.tokenUri("https://token-uri.example.org")
-			.build();
+        this.mvc.perform(get("/").with(oauth2Login()))
+                .andExpect(model().attribute("userName", "user"))
+                .andExpect(model().attribute("clientName", "test"))
+                .andExpect(model().attribute("userAttributes", Collections.singletonMap("sub", "user")));
 
-		this.mvc.perform(get("/").with(oauth2Login()
-			.clientRegistration(clientRegistration)
-			.attributes((a) -> a.put("sub", "spring-security"))))
-			.andExpect(model().attribute("userName", "spring-security"))
-			.andExpect(model().attribute("clientName", "my-client-name"))
-			.andExpect(model().attribute("userAttributes", Collections.singletonMap("sub", "spring-security")));
-		
-	}
+    }
 
-	@TestConfiguration
-	static class AuthorizedClient {
+    @Test
+    void rootWhenOverridingClientRegistrationReturnsAccordingly() throws Exception {
 
-		@Bean
-		OAuth2AuthorizedClientRepository authorizedClientRepository() {
-			return new HttpSessionOAuth2AuthorizedClientRepository();
-		}
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
+                .authorizationGrantType(AuthorizationGrantType.PASSWORD)
+                .clientId("my-client-id")
+                .clientName("my-client-name")
+                .tokenUri("https://token-uri.example.org")
+                .build();
 
-	}
+        this.mvc.perform(get("/").with(oauth2Login()
+                        .clientRegistration(clientRegistration)
+                        .attributes((a) -> a.put("sub", "spring-security"))))
+                .andExpect(model().attribute("userName", "spring-security"))
+                .andExpect(model().attribute("clientName", "my-client-name"))
+                .andExpect(model().attribute("userAttributes", Collections.singletonMap("sub", "spring-security")));
+
+    }
+
+    @TestConfiguration
+    static class AuthorizedClient {
+
+        @Bean
+        OAuth2AuthorizedClientRepository authorizedClientRepository() {
+            return new HttpSessionOAuth2AuthorizedClientRepository();
+        }
+
+    }
 
 }
