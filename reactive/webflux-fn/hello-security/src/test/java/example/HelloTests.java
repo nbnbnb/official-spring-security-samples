@@ -37,23 +37,23 @@ public class HelloTests {
 	@Test
 	@WithMockUser
 	void indexWhenAuthenticatedThenOk() throws Exception {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/")
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody().json("{\"message\":\"Hello user!\"}");
-		// @formatter:on
+		
 	}
 
 	@Test
 	void indexWithNotAuthenticatedThenUnauthorized() throws Exception {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/")
 			.exchange()
 			.expectStatus().isUnauthorized();
-		// @formatter:on
+		
 	}
 
 }

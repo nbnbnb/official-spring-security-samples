@@ -70,20 +70,20 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
 	@Bean
 	@Order(2)
 	public SecurityFilterChain standardSecurityFilterChain(HttpSecurity http) throws Exception {
-		// @formatter:off
+		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
 				.anyRequest().authenticated()
 			)
 			.formLogin(Customizer.withDefaults());
-		// @formatter:on
+		
 
 		return http.build();
 	}
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
-		// @formatter:off
+		
 		RegisteredClient loginClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId("login-client")
 				.clientSecret("{noop}openid-connect")
@@ -104,7 +104,7 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
 				.scope("message:read")
 				.scope("message:write")
 				.build();
-		// @formatter:on
+		
 
 		return new InMemoryRegisteredClientRepository(loginClient, registeredClient);
 	}
@@ -113,12 +113,12 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
 	public JWKSource<SecurityContext> jwkSource(KeyPair keyPair) {
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		// @formatter:off
+		
 		RSAKey rsaKey = new RSAKey.Builder(publicKey)
 				.privateKey(privateKey)
 				.keyID(UUID.randomUUID().toString())
 				.build();
-		// @formatter:on
+		
 		JWKSet jwkSet = new JWKSet(rsaKey);
 		return new ImmutableJWKSet<>(jwkSet);
 	}
@@ -135,13 +135,13 @@ public class OAuth2AuthorizationServerSecurityConfiguration {
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		// @formatter:off
+		
 		UserDetails userDetails = User.withDefaultPasswordEncoder()
 				.username("user")
 				.password("password")
 				.roles("USER")
 				.build();
-		// @formatter:on
+		
 
 		return new InMemoryUserDetailsManager(userDetails);
 	}

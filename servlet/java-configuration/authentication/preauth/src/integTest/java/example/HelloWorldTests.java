@@ -53,25 +53,25 @@ public class HelloWorldTests {
 
 	@Test
 	void authenticatedUserIsSentToOriginalPage() {
-		// @formatter:off
+		
 		final HomePage homePage = HomePage.to(this.driver, this.port)
 				.loginForm()
 					.username("user")
 					.password("password")
 					.submit();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void authenticatedUserLogsOut() {
-		// @formatter:off
+		
 		LoginPage loginPage = HomePage.to(this.driver, this.port)
 				.loginForm()
 					.username("user")
 					.password("password")
 					.submit()
 				.logout();
-		// @formatter:on
+		
 		loginPage.assertAt();
 
 		loginPage = HomePage.to(this.driver, this.port);

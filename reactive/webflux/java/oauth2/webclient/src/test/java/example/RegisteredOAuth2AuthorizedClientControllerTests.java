@@ -58,50 +58,50 @@ public class RegisteredOAuth2AuthorizedClientControllerTests {
 	@Test
 	void annotationExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Login())
 			.mutateWith(mockOAuth2Client("client-id"))
 			.get()
 			.uri("/annotation/explicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void annotationImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Login())
 			.get()
 			.uri("/annotation/implicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void publicAnnotationExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Client("client-id"))
 			.get()
 			.uri("/public/annotation/explicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void publicAnnotationImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Login())
 			.get()
 			.uri("/public/annotation/implicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Configuration

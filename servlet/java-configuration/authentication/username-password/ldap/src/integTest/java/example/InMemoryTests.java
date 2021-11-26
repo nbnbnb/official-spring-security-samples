@@ -53,25 +53,25 @@ public class InMemoryTests {
 
 	@Test
 	void authenticatedUserIsSentToOriginalPage() {
-		// @formatter:off
+		
 		final HomePage homePage = HomePage.to(this.driver, this.port)
 				.loginForm()
 					.username("user")
 					.password("password")
 					.submit();
-		// @formatter:on
+		
 		homePage.assertAt();
 	}
 
 	@Test
 	void authenticatedWhenAdmin() {
-		// @formatter:off
+		
 		HomePage homePage = HomePage.to(this.driver, this.port)
 				.loginForm()
 				.username("admin")
 				.password("password")
 				.submit();
-		// @formatter:on
+		
 		homePage.assertAt();
 	}
 

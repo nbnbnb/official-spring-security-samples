@@ -32,7 +32,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	// @formatter:off
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user = User.withDefaultPasswordEncoder()
@@ -42,9 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.build();
 		return new InMemoryUserDetailsManager(user);
 	}
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -59,6 +59,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				)
 			);
 	}
-	// @formatter:on
+	
 
 }

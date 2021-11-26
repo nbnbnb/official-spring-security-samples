@@ -330,7 +330,7 @@ public class OAuth2LoginApplicationTests {
 	@EnableWebSecurity
 	public static class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 
-		// @formatter:off
+		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
 			http
@@ -342,7 +342,7 @@ public class OAuth2LoginApplicationTests {
 					.userInfoEndpoint((userInfo) -> userInfo.userService(mockUserService()))
 				);
 		}
-		// @formatter:on
+		
 
 		private OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> mockAccessTokenResponseClient() {
 			OAuth2AccessTokenResponse accessTokenResponse = OAuth2AccessTokenResponse.withToken("access-token-1234")

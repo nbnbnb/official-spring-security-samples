@@ -27,7 +27,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	// @formatter:off
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -37,9 +37,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			)
 			.jee((jee) -> jee.mappableRoles("USER", "ADMIN"));
 	}
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user = User.withDefaultPasswordEncoder()
@@ -49,6 +49,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.build();
 		return new InMemoryUserDetailsManager(user);
 	}
-	// @formatter:on
+	
 
 }

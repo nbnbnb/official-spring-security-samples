@@ -30,7 +30,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Override
-	// @formatter:off
+	
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests((authorize) -> authorize
@@ -42,9 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			)
 			.rememberMe(withDefaults());
 	}
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user = User.withDefaultPasswordEncoder()
@@ -54,6 +54,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.build();
 		return new InMemoryUserDetailsManager(user);
 	}
-	// @formatter:on
+	
 
 }

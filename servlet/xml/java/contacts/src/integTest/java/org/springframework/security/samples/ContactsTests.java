@@ -58,7 +58,7 @@ public class ContactsTests {
 		final String name = "Rob Winch";
 		final String email = "rob@example.com";
 
-		// @formatter:off
+		
 		ContactsPage.accessManagePageWithUnauthenticatedUser(this.driver, this.port)
 			.sendsToLoginPage()
 				.username("rod")
@@ -74,12 +74,12 @@ public class ContactsTests {
 			.andConfirmDeletion()
 			.isAtContactsPage()
 			.andContactHasBeenRemoved(name, email);
-		// @formatter:on
+		
 	}
 
 	@Test
 	void authenticatedUserLogsOut() {
-		// @formatter:off
+		
 		final HomePage homePage = ContactsPage.accessManagePageWithUnauthenticatedUser(this.driver, this.port)
 			.sendsToLoginPage()
 				.username("rod")
@@ -87,7 +87,7 @@ public class ContactsTests {
 			.submit()
 			.isAtContactsPage()
 			.logout();
-		// @formatter:on
+		
 		homePage.assertAt();
 
 		ContactsPage.accessManagePageWithUnauthenticatedUser(this.driver, this.port).sendsToLoginPage();

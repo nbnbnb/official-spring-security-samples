@@ -35,7 +35,7 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 @Component
 public class HelloController {
 
-	// @formatter:off
+	
 	public Mono<ServerResponse> hello(ServerRequest serverRequest) {
 		return serverRequest.principal()
 			.map(Principal::getName)
@@ -45,6 +45,6 @@ public class HelloController {
 					.bodyValue(Collections.singletonMap("message", "Hello " + username + "!"))
 			);
 	}
-	// @formatter:on
+	
 
 }

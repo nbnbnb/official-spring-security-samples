@@ -39,19 +39,19 @@ public class WebfluxFormSecurityConfiguration {
 
 	@Bean
 	public MapReactiveUserDetailsService userDetailsService() {
-		// @formatter:off
+		
 		UserDetails user = User.withDefaultPasswordEncoder()
 			.username("user")
 			.password("password")
 			.roles("USER")
 			.build();
-		// @formatter:on
+		
 		return new MapReactiveUserDetailsService(user);
 	}
 
 	@Bean
 	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-		// @formatter:off
+		
 		http
 			.authorizeExchange((authorize) -> authorize
 				.pathMatchers("/login").permitAll()
@@ -61,7 +61,7 @@ public class WebfluxFormSecurityConfiguration {
 			.formLogin((form) -> form
 				.loginPage("/login")
 			);
-		// @formatter:on
+		
 		return http.build();
 	}
 

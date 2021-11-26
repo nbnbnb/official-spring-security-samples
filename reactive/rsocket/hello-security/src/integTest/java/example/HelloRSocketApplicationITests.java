@@ -51,13 +51,13 @@ public class HelloRSocketApplicationITests {
 	@Test
 	void messageWhenAuthenticatedThenSuccess() {
 		UsernamePasswordMetadata credentials = new UsernamePasswordMetadata("user", "password");
-		// @formatter:off
+		
 		RSocketRequester requester = this.requester
 				.rsocketStrategies((builder) -> builder.encoder(new SimpleAuthenticationEncoder()))
 				.setupMetadata(credentials, MimeTypeUtils.parseMimeType(WellKnownMimeType.MESSAGE_RSOCKET_AUTHENTICATION.getString()))
 				.connectTcp("localhost", this.port)
 				.block();
-		// @formatter:on
+		
 
 		String message = requester.route("message").data(Mono.empty()).retrieveMono(String.class).block();
 

@@ -45,7 +45,7 @@ public class OAuth2ResourceServerSecurityConfiguration {
 	@Bean
 	SecurityFilterChain apiSecurity(HttpSecurity http,
 			AuthenticationManagerResolver<HttpServletRequest> authenticationManagerResolver) throws Exception {
-		// @formatter:off
+		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
 				.mvcMatchers("/**/message/**").hasAuthority("SCOPE_message:read")
@@ -54,7 +54,7 @@ public class OAuth2ResourceServerSecurityConfiguration {
 			.oauth2ResourceServer((oauth2) -> oauth2
 				.authenticationManagerResolver(authenticationManagerResolver)
 			);
-		// @formatter:on
+		
 
 		return http.build();
 	}
@@ -68,11 +68,11 @@ public class OAuth2ResourceServerSecurityConfiguration {
 		return (request) -> {
 			String[] pathParts = request.getRequestURI().split("/");
 			String tenantId = (pathParts.length > 0) ? pathParts[1] : null;
-			// @formatter:off
+			
 			return Optional.ofNullable(tenantId)
 					.map(authenticationManagers::get)
 					.orElseThrow(() -> new IllegalArgumentException("unknown tenant"));
-			// @formatter:on
+			
 		};
 	}
 

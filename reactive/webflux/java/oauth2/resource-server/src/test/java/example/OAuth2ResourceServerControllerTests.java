@@ -47,18 +47,18 @@ public class OAuth2ResourceServerControllerTests {
 
 	@Test
 	void indexGreetsAuthenticatedUser() {
-		// @formatter:off
+		
 		this.rest.mutateWith(mockJwt().jwt((jwt) -> jwt.subject("test-subject")))
 			.get()
 			.uri("/")
 			.exchange()
 			.expectBody(String.class).isEqualTo("Hello, test-subject!");
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanBeReadWithScopeMessageReadAuthority() {
-		// @formatter:off
+		
 		this.rest.mutateWith(mockJwt().jwt((jwt) -> jwt.claim("scope", "message:read")))
 			.get()
 			.uri("/message")
@@ -70,53 +70,53 @@ public class OAuth2ResourceServerControllerTests {
 			.uri("/message")
 			.exchange()
 			.expectBody(String.class).isEqualTo("secret message");
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanNotBeReadWithoutScopeMessageReadAuthority() {
-		// @formatter:off
+		
 		this.rest.mutateWith(mockJwt())
 			.get()
 			.uri("/message")
 			.exchange()
 			.expectStatus().isForbidden();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanNotBeCreatedWithoutAnyScope() {
 		Jwt jwt = jwt().claim("scope", "").build();
 		when(this.jwtDecoder.decode(anyString())).thenReturn(Mono.just(jwt));
-		// @formatter:off
+		
 		this.rest.post()
 			.uri("/message")
 			.headers((headers) -> headers.setBearerAuth(jwt.getTokenValue()))
 			.bodyValue("Hello message")
 			.exchange()
 			.expectStatus().isForbidden();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanNotBeCreatedWithScopeMessageReadAuthority() {
 		Jwt jwt = jwt().claim("scope", "message:read").build();
 		when(this.jwtDecoder.decode(anyString())).thenReturn(Mono.just(jwt));
-		// @formatter:off
+		
 		this.rest.post()
 			.uri("/message")
 			.headers((headers) -> headers.setBearerAuth(jwt.getTokenValue()))
 			.bodyValue("Hello message")
 			.exchange()
 			.expectStatus().isForbidden();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanBeCreatedWithScopeMessageWriteAuthority() {
 		Jwt jwt = jwt().claim("scope", "message:write").build();
 		when(this.jwtDecoder.decode(anyString())).thenReturn(Mono.just(jwt));
-		// @formatter:off
+		
 		this.rest.post()
 			.uri("/message")
 			.headers((headers) -> headers.setBearerAuth(jwt.getTokenValue()))
@@ -124,7 +124,7 @@ public class OAuth2ResourceServerControllerTests {
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(String.class).isEqualTo("Message was created. Content: Hello message");
-		// @formatter:on
+		
 	}
 
 	private Jwt.Builder jwt() {

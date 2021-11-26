@@ -34,14 +34,14 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain app(HttpSecurity http) throws Exception {
-		// @formatter:off
+		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
 				.anyRequest().authenticated()
 			)
 			.saml2Login((saml2) -> saml2.loginProcessingUrl("/login/saml2/sso"))
 			.saml2Logout(Customizer.withDefaults());
-		// @formatter:on
+		
 
 		return http.build();
 	}

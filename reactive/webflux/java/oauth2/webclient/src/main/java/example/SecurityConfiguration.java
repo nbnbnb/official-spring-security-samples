@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityWebFilterChain configure(ServerHttpSecurity http) {
-		// @formatter:off
+		
 		http
 			.authorizeExchange((authorize) -> authorize
 				.pathMatchers("/", "/public/**").permitAll()
@@ -44,19 +44,19 @@ public class SecurityConfiguration {
 			.oauth2Login(withDefaults())
 			.formLogin(withDefaults())
 			.oauth2Client(withDefaults());
-		// @formatter:on
+		
 		return http.build();
 	}
 
 	@Bean
 	MapReactiveUserDetailsService userDetailsService() {
-		// @formatter:off
+		
 		UserDetails userDetails = User.withDefaultPasswordEncoder()
 			.username("user")
 			.password("password")
 			.roles("USER")
 			.build();
-		// @formatter:on
+		
 		return new MapReactiveUserDetailsService(userDetails);
 	}
 

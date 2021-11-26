@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
 
-	// @formatter:off
+	
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth
@@ -39,6 +39,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.withUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER"))
 				.withUser(User.withDefaultPasswordEncoder().username("admin").password("password").roles("ADMIN", "USER"));
 	}
-	// @formatter:on
+	
 
 }

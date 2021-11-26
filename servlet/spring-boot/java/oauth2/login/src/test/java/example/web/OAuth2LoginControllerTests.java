@@ -52,17 +52,17 @@ public class OAuth2LoginControllerTests {
 
 	@Test
 	void rootWhenAuthenticatedReturnsUserAndClient() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(get("/").with(oauth2Login()))
 			.andExpect(model().attribute("userName", "user"))
 			.andExpect(model().attribute("clientName", "test"))
 			.andExpect(model().attribute("userAttributes", Collections.singletonMap("sub", "user")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void rootWhenOverridingClientRegistrationReturnsAccordingly() throws Exception {
-		// @formatter:off
+		
 		ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
 			.authorizationGrantType(AuthorizationGrantType.PASSWORD)
 			.clientId("my-client-id")
@@ -76,7 +76,7 @@ public class OAuth2LoginControllerTests {
 			.andExpect(model().attribute("userName", "spring-security"))
 			.andExpect(model().attribute("clientName", "my-client-name"))
 			.andExpect(model().attribute("userAttributes", Collections.singletonMap("sub", "spring-security")));
-		// @formatter:on
+		
 	}
 
 	@TestConfiguration

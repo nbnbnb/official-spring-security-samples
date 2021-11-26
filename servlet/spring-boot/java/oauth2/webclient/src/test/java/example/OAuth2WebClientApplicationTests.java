@@ -33,15 +33,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class OAuth2WebClientApplicationTests {
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@Test
-	void annotationExplicitWhenNotAuthenticatedThenLoginRequested() throws Exception {
-		// @formatter:off
-		this.mockMvc.perform(get("/annotation/explicit"))
-				.andExpect(status().is3xxRedirection());
-		// @formatter:on
-	}
+    @Test
+    void annotationExplicitWhenNotAuthenticatedThenLoginRequested() throws Exception {
+
+        this.mockMvc.perform(get("/annotation/explicit"))
+                .andExpect(status().is3xxRedirection());
+
+    }
 
 }

@@ -46,24 +46,24 @@ public class RegisteredOAuth2AuthorizedClientController {
 	@GetMapping("/explicit")
 	String explicit(Model model,
 			@RegisteredOAuth2AuthorizedClient("client-id") OAuth2AuthorizedClient authorizedClient) {
-		// @formatter:off
+		
 		Mono<String> body = this.webClient.get()
 			.attributes(oauth2AuthorizedClient(authorizedClient))
 			.retrieve()
 			.bodyToMono(String.class);
-		// @formatter:on
+		
 		model.addAttribute("body", body);
 		return "response";
 	}
 
 	@GetMapping("/implicit")
 	String implicit(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) {
-		// @formatter:off
+		
 		Mono<String> body = this.webClient.get()
 			.attributes(oauth2AuthorizedClient(authorizedClient))
 			.retrieve()
 			.bodyToMono(String.class);
-		// @formatter:on
+		
 		model.addAttribute("body", body);
 		return "response";
 	}

@@ -55,11 +55,11 @@ public class OAuth2ResourceServerApplicationITests {
 	@Test
 	void performWhenValidBearerTokenThenAllows() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/").with(bearerToken(this.noScopesToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Hello, subject!")));
-		// @formatter:on
+		
 	}
 
 	// -- tests with scopes
@@ -67,45 +67,45 @@ public class OAuth2ResourceServerApplicationITests {
 	@Test
 	void performWhenValidBearerTokenThenScopedRequestsAlsoWork() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/message").with(bearerToken(this.messageReadToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("secret message")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void performWhenInsufficientlyScopedBearerTokenThenDeniesScopedMethodAccess() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/message").with(bearerToken(this.noScopesToken)))
 				.andExpect(status().isForbidden())
 				.andExpect(header().string(HttpHeaders.WWW_AUTHENTICATE,
 						containsString("Bearer error=\"insufficient_scope\"")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void performPostWhenValidBearerTokenThenScopedRequestsAlsoWork() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(post("/message").content("example message")
 				.with(bearerToken(this.messageWriteToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Message was created")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void performPostWhenInsufficientlyScopedBearerTokenThenDeniesScopedMethodAccess() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(post("/message").content("Example message")
 				.with(bearerToken(this.messageReadToken)))
 				.andExpect(status().isForbidden())
 				.andExpect(header().string(HttpHeaders.WWW_AUTHENTICATE,
 						containsString("Bearer error=\"insufficient_scope\"")));
-		// @formatter:on
+		
 	}
 
 	private static BearerTokenRequestPostProcessor bearerToken(String token) {

@@ -57,21 +57,21 @@ public class OAuth2ResourceServerApplicationITests {
 	@Test
 	void tenantOnePerformWhenValidBearerTokenThenAllows() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantOne").with(bearerToken(this.tenantOneNoScopesToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Hello, subject for tenantOne!")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void tenantOnePerformWhenValidBearerTokenWithServletPathThenAllows() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantOne").servletPath("/tenantOne").with(bearerToken(this.tenantOneNoScopesToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Hello, subject for tenantOne!")));
-		// @formatter:on
+		
 	}
 
 	// -- tests with scopes
@@ -79,32 +79,32 @@ public class OAuth2ResourceServerApplicationITests {
 	@Test
 	void tenantOnePerformWhenValidBearerTokenThenScopedRequestsAlsoWork() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantOne/message").with(bearerToken(this.tenantOneMessageReadToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("secret message for tenantOne")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void tenantOnePerformWhenInsufficientlyScopedBearerTokenThenDeniesScopedMethodAccess() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantOne/message").with(bearerToken(this.tenantOneNoScopesToken)))
 				.andExpect(status().isForbidden())
 				.andExpect(header().string(HttpHeaders.WWW_AUTHENTICATE,
 						containsString("Bearer error=\"insufficient_scope\"")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void tenantTwoPerformWhenValidBearerTokenThenAllows() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantTwo").with(bearerToken(this.tenantTwoNoScopesToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("Hello, subject for tenantTwo!")));
-		// @formatter:on
+		
 	}
 
 	// -- tests with scopes
@@ -112,34 +112,34 @@ public class OAuth2ResourceServerApplicationITests {
 	@Test
 	void tenantTwoPerformWhenValidBearerTokenThenScopedRequestsAlsoWork() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantTwo/message").with(bearerToken(this.tenantTwoMessageReadToken)))
 				.andExpect(status().isOk())
 				.andExpect(content().string(containsString("secret message for tenantTwo")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void tenantTwoPerformWhenInsufficientlyScopedBearerTokenThenDeniesScopedMethodAccess() throws Exception {
 
-		// @formatter:off
+		
 		this.mvc.perform(get("/tenantTwo/message").with(bearerToken(this.tenantTwoNoScopesToken)))
 				.andExpect(status().isForbidden())
 				.andExpect(header().string(HttpHeaders.WWW_AUTHENTICATE,
 						containsString("Bearer error=\"insufficient_scope\"")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void invalidTenantPerformWhenValidBearerTokenThenThrowsException() throws Exception {
 
-		// @formatter:off
+		
 		assertThatIllegalArgumentException()
 				.isThrownBy(() ->
 						this.mvc.perform(get("/tenantThree")
 								.with(bearerToken(this.tenantOneNoScopesToken)))
 				);
-		// @formatter:on
+		
 	}
 
 	private static BearerTokenRequestPostProcessor bearerToken(String token) {

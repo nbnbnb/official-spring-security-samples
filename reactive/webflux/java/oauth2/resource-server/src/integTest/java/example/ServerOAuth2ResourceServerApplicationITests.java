@@ -51,37 +51,37 @@ public class ServerOAuth2ResourceServerApplicationITests {
 
 	@Test
 	void getWhenValidBearerTokenThenAllows() {
-		// @formatter:off
+		
 		this.rest.get().uri("/")
 			.headers(this.noScopesToken)
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(String.class).isEqualTo("Hello, subject!");
-		// @formatter:on
+		
 	}
 
 	// -- tests with scopes
 
 	@Test
 	void getWhenValidBearerTokenThenScopedRequestsAlsoWork() {
-		// @formatter:off
+		
 		this.rest.get().uri("/message")
 			.headers(this.messageReadToken)
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(String.class).isEqualTo("secret message");
-		// @formatter:on
+		
 	}
 
 	@Test
 	void getWhenInsufficientlyScopedBearerTokenThenDeniesScopedMethodAccess() {
-		// @formatter:off
+		
 		this.rest.get().uri("/message")
 			.headers(this.noScopesToken)
 			.exchange()
 			.expectStatus().isForbidden()
 			.expectHeader().value(HttpHeaders.WWW_AUTHENTICATE, containsString("Bearer error=\"insufficient_scope\""));
-		// @formatter:on
+		
 	}
 
 }

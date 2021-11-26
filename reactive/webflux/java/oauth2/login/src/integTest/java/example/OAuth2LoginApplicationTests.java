@@ -47,7 +47,7 @@ public class OAuth2LoginApplicationTests {
 
 	@Test
 	void requestWhenMockOidcLoginThenIndex() {
-		// @formatter:off
+		
 		this.clientRegistrationRepository.findByRegistrationId("github")
 			.map((clientRegistration) ->
 				this.test.mutateWith(mockOAuth2Login().clientRegistration(clientRegistration))
@@ -57,7 +57,7 @@ public class OAuth2LoginApplicationTests {
 					.expectBody(String.class).value(containsString("GitHub"))
 			)
 			.block();
-		// @formatter:on
+		
 	}
 
 	@TestConfiguration

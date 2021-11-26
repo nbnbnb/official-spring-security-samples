@@ -53,26 +53,26 @@ public class FormLoginTests {
 
 	@Test
 	void authenticatedUserIsSentToOriginalPage() {
-		// @formatter:off
+		
 		final HomePage homePage = HomePage.to(this.driver, this.port)
 				.loginForm()
 					.username("user")
 					.password("password")
 					.submit();
-		// @formatter:on
+		
 		homePage.assertAt();
 	}
 
 	@Test
 	void authenticatedUserLogsOut() {
-		// @formatter:off
+		
 		CustomLoginPage loginPage = HomePage.to(this.driver, this.port)
 				.loginForm()
 					.username("user")
 					.password("password")
 					.submit()
 				.logout();
-		// @formatter:on
+		
 		loginPage.assertAt();
 
 		loginPage = HomePage.to(this.driver, this.port);

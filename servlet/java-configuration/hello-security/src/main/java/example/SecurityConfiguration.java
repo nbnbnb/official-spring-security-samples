@@ -25,7 +25,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-	// @formatter:off
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user = User.withDefaultPasswordEncoder()
@@ -35,6 +35,6 @@ public class SecurityConfiguration {
 				.build();
 		return new InMemoryUserDetailsManager(user);
 	}
-	// @formatter:on
+	
 
 }

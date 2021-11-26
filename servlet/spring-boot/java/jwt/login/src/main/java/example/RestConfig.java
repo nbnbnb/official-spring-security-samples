@@ -60,7 +60,7 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
+		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
 				.anyRequest().authenticated()
@@ -73,19 +73,19 @@ public class RestConfig extends WebSecurityConfigurerAdapter {
 				.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
 				.accessDeniedHandler(new BearerTokenAccessDeniedHandler())
 			);
-		// @formatter:on
+		
 	}
 
 	@Bean
 	UserDetailsService users() {
-		// @formatter:off
+		
 		return new InMemoryUserDetailsManager(
 			User.withUsername("user")
 				.password("{noop}password")
 				.authorities("app")
 				.build()
 		);
-		// @formatter:on
+		
 	}
 
 	@Bean

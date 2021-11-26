@@ -45,7 +45,7 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 
 	// introspection endpoint
 
-	// @formatter:off
+	
 	private static final MockResponse NO_SCOPES_RESPONSE = response(
 			"{\n" +
 					"      \"active\": true,\n" +
@@ -53,9 +53,9 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 					"     }",
 			200
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse MESSASGE_READ_SCOPE_RESPONSE = response(
 			"{\n" +
 					"      \"active\": true,\n" +
@@ -64,41 +64,41 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 					"     }",
 			200
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse INACTIVE_RESPONSE = response(
 			"{\n" +
 					"      \"active\": false,\n" +
 					"     }",
 			200
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse BAD_REQUEST_RESPONSE = response(
 			"{ \"message\" : \"This mock authorization server requires a username and password of " +
 					"client/secret and a POST body of token=${token}\" }",
 			400
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse NOT_FOUND_RESPONSE = response(
 			"{ \"message\" : \"This mock authorization server responds to just two requests: POST /introspect" +
 					" and GET /.well-known/jwks.json.\" }",
 			404
 	);
-	// @formatter:on
+	
 
 	// jwks endpoint
 
-	// @formatter:off
+	
 	private static final MockResponse JWKS_RESPONSE = response(
 			"{\"keys\":[{\"p\":\"2p-ViY7DE9ZrdWQb544m0Jp7Cv03YCSljqfim9pD4ALhObX0OrAznOiowTjwBky9JGffMwDBVSfJSD9TSU7aH2sbbfi0bZLMdekKAuimudXwUqPDxrrg0BCyvCYgLmKjbVT3zcdylWSog93CNTxGDPzauu-oc0XPNKCXnaDpNvE\",\"kty\":\"RSA\",\"q\":\"sP_QYavrpBvSJ86uoKVGj2AGl78CSsAtpf1ybSY5TwUlorXSdqapRbY69Y271b0aMLzlleUn9ZTBO1dlKV2_dw_lPADHVia8z3pxL-8sUhIXLsgj4acchMk4c9YX-sFh07xENnyZ-_TXm3llPLuL67HUfBC2eKe800TmCYVWc9U\",\"d\":\"bn1nFxCQT4KLTHqo8mo9HvHD0cRNRNdWcKNnnEQkCF6tKbt-ILRyQGP8O40axLd7CoNVG9c9p_-g4-2kwCtLJNv_STLtwfpCY7VN5o6-ZIpfTjiW6duoPrLWq64Hm_4LOBQTiZfUPcLhsuJRHbWqakj-kV_YbUyC2Ocf_dd8IAQcSrAU2SCcDebhDCWwRUFvaa9V5eq0851S9goaA-AJz-JXyePH6ZFr8JxmWkWxYZ5kdcMD-sm9ZbxE0CaEk32l4fE4hR-L8x2dDtjWA-ahKCZ091z-gV3HWtR2JOjvxoNRjxUo3UxaGiFJHWNIl0EYUJZu1Cb-5wIlEI7wPx5mwQ\",\"e\":\"AQAB\",\"use\":\"sig\",\"kid\":\"one\",\"qi\":\"qS0OK48M2CIAA6_4Wdw4EbCaAfcTLf5Oy9t5BOF_PFUKqoSpZ6JsT5H0a_4zkjt-oI969v78OTlvBKbmEyKO-KeytzHBAA5CsLmVcz0THrMSg6oXZqu66MPnvWoZN9FEN5TklPOvBFm8Bg1QZ3k-YMVaM--DLvhaYR95_mqaz50\",\"dp\":\"Too2NozLGD1XrXyhabZvy1E0EuaVFj0UHQPDLSpkZ_2g3BK6Art6T0xmE8RYtmqrKIEIdlI3IliAvyvAx_1D7zWTTRaj-xlZyqJFrnXWL7zj8UxT8PkB-r2E-ILZ3NAi1gxIWezlBTZ8M6NfObDFmbTc_3tJkN_raISo8z_ziIE\",\"dq\":\"U0yhSkY5yOsa9YcMoigGVBWSJLpNHtbg5NypjHrPv8OhWbkOSq7WvSstBkFk5AtyFvvfZLMLIkWWxxGzV0t6f1MoxBtttLrYYyCxwihiiGFhLbAdSuZ1wnxcqA9bC7UVECvrQmVTpsMs8UupfHKbQBpZ8OWAqrnuYNNtG4_4Bt0\",\"n\":\"lygtuZj0lJjqOqIWocF8Bb583QDdq-aaFg8PesOp2-EDda6GqCpL-_NZVOflNGX7XIgjsWHcPsQHsV9gWuOzSJ0iEuWvtQ6eGBP5M6m7pccLNZfwUse8Cb4Ngx3XiTlyuqM7pv0LPyppZusfEHVEdeelou7Dy9k0OQ_nJTI3b2E1WBoHC58CJ453lo4gcBm1efURN3LIVc1V9NQY_ESBKVdwqYyoJPEanURLVGRd6cQKn6YrCbbIRHjqAyqOE-z3KmgDJnPriljfR5XhSGyM9eqD9Xpy6zu_MAeMJJfSArp857zLPk-Wf5VP9STAcjyfdBIybMKnwBYr2qHMT675hQ\"}]}",
 			200
 	);
-	// @formatter:on
+	
 
 	/**
 	 * Name of the random {@link PropertySource}.
@@ -169,7 +169,7 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 		}
 
 		if ("/introspect".equals(request.getPath())) {
-			// @formatter:off
+			
 			return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
 					.filter((authorization) -> isAuthorized(authorization, "client", "secret"))
 					.map((authorization) -> parseBody(request.getBody()))
@@ -186,7 +186,7 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 						}
 					})
 					.orElse(BAD_REQUEST_RESPONSE);
-			// @formatter:on
+			
 		}
 
 		return NOT_FOUND_RESPONSE;
@@ -198,20 +198,20 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 	}
 
 	private Map<String, Object> parseBody(Buffer body) {
-		// @formatter:off
+		
 		return Stream.of(body.readUtf8().split("&"))
 				.map((parameter) -> parameter.split("="))
 				.collect(Collectors.toMap((parts) -> parts[0], (parts) -> parts[1]));
-		// @formatter:on
+		
 	}
 
 	private static MockResponse response(String body, int status) {
-		// @formatter:off
+		
 		return new MockResponse()
 				.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.setResponseCode(status)
 				.setBody(body);
-		// @formatter:on
+		
 	}
 
 }

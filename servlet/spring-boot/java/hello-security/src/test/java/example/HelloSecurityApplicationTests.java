@@ -38,19 +38,19 @@ public class HelloSecurityApplicationTests {
 
 	@Test
 	void indexWhenUnAuthenticatedThenRedirect() throws Exception {
-		// @formatter:off
+		
 		this.mockMvc.perform(get("/"))
 				.andExpect(status().isUnauthorized());
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser
 	void indexWhenAuthenticatedThenOk() throws Exception {
-		// @formatter:off
+		
 		this.mockMvc.perform(get("/"))
 				.andExpect(status().isOk());
-		// @formatter:on
+		
 	}
 
 }

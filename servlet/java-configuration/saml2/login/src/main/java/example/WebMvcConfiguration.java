@@ -44,11 +44,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		// @formatter:off
+		
 		registry.addResourceHandler("/resources/**")
 				.addResourceLocations("classpath:/resources/")
 				.setCachePeriod(0);
-		// @formatter:on
+		
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
 

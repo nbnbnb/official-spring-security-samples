@@ -36,23 +36,23 @@ public class HelloSecurityTests {
 
 	@Test
 	void indexWhenUnAuthenticatedThenRedirect() throws Exception {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/")
 			.exchange()
 			.expectStatus().isUnauthorized();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser
 	void indexWhenAuthenticatedThenOk() throws Exception {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 }

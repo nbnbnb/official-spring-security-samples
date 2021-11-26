@@ -34,30 +34,30 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
-		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.mvcMatchers("/", "/public/**").permitAll()
-				.anyRequest().authenticated()
-			)
-			.formLogin(withDefaults())
-			.oauth2Login(withDefaults())
-			.oauth2Client(withDefaults());
-		// @formatter:on
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		// @formatter:off
-		UserDetails userDetails = User.withDefaultPasswordEncoder()
-			.username("user")
-			.password("password")
-			.roles("USER")
-			.build();
-		// @formatter:on
-		return new InMemoryUserDetailsManager(userDetails);
-	}
+        http
+                .authorizeHttpRequests()
+                .mvcMatchers("/", "/public/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin(withDefaults())
+                .oauth2Login(withDefaults())
+                .oauth2Client(withDefaults());
+
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+
+        UserDetails userDetails = User.withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+
+        return new InMemoryUserDetailsManager(userDetails);
+    }
 
 }

@@ -43,7 +43,7 @@ public class RememberMeTests {
 
 	@Test
 	void loginWhenRemembermeThenAuthenticated(WebApplicationContext context) throws Exception {
-		// @formatter:off
+		
 		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
 				.apply(springSecurity())
 				.build();
@@ -56,19 +56,19 @@ public class RememberMeTests {
 		MvcResult mvcResult = mockMvc.perform(login)
 				.andExpect(authenticated())
 				.andReturn();
-		// @formatter:on
+		
 
 		Cookie rememberMe = mvcResult.getResponse().getCookie("remember-me");
 
-		// @formatter:off
+		
 		mockMvc.perform(get("/").cookie(rememberMe))
 				.andExpect(authenticated());
-		// @formatter:on
+		
 	}
 
 	@Test
 	void loginWhenNoRemembermeThenUnauthenticated(WebApplicationContext context) throws Exception {
-		// @formatter:off
+		
 		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
 				.apply(springSecurity())
 				.build();
@@ -78,17 +78,17 @@ public class RememberMeTests {
 				.param("username", "user")
 				.param("password", "password")
 				.param("remember-me", "true");
-		// @formatter:on
+		
 
-		// @formatter:off
+		
 		mockMvc.perform(get("/"))
 				.andExpect(unauthenticated());
-		// @formatter:on
+		
 	}
 
 	@Test
 	void loginWhenNoRemembermeThenNoCookie(WebApplicationContext context) throws Exception {
-		// @formatter:off
+		
 		MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(context)
 				.apply(springSecurity())
 				.build();
@@ -100,7 +100,7 @@ public class RememberMeTests {
 		MvcResult mvcResult = mockMvc.perform(login)
 				.andExpect(authenticated())
 				.andReturn();
-		// @formatter:on
+		
 
 		Cookie rememberMe = mvcResult.getResponse().getCookie("remember-me");
 

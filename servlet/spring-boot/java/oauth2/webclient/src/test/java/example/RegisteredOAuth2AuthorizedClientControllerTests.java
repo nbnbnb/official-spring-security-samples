@@ -40,77 +40,77 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
-@Import({ SecurityConfiguration.class, RegisteredOAuth2AuthorizedClientController.class })
+@Import({SecurityConfiguration.class, RegisteredOAuth2AuthorizedClientController.class})
 @AutoConfigureMockMvc
 public class RegisteredOAuth2AuthorizedClientControllerTests {
 
-	private static MockWebServer web = new MockWebServer();
+    private static final MockWebServer web = new MockWebServer();
 
-	@Autowired
-	private MockMvc mockMvc;
+    @Autowired
+    private MockMvc mockMvc;
 
-	@MockBean
-	ClientRegistrationRepository clientRegistrationRepository;
+    @MockBean
+    ClientRegistrationRepository clientRegistrationRepository;
 
-	@AfterAll
-	static void shutdown() throws Exception {
-		web.shutdown();
-	}
+    @AfterAll
+    static void shutdown() throws Exception {
+        web.shutdown();
+    }
 
-	@Test
-	void annotationExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
-		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
-		this.mockMvc.perform(get("/annotation/explicit")
-				.with(oauth2Login())
-				.with(oauth2Client("client-id")))
-				.andExpect(status().isOk());
-		// @formatter:on
-	}
+    @Test
+    void annotationExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
+        web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
 
-	@Test
-	void annotationImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
-		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
-		this.mockMvc.perform(get("/annotation/implicit")
-				.with(oauth2Login()))
-				.andExpect(status().isOk());
-		// @formatter:on
-	}
+        this.mockMvc.perform(get("/annotation/explicit")
+                        .with(oauth2Login())
+                        .with(oauth2Client("client-id")))
+                .andExpect(status().isOk());
 
-	@Test
-	void publicAnnotationExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
-		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
-		this.mockMvc.perform(get("/public/annotation/explicit")
-				.with(oauth2Client("client-id")))
-				.andExpect(status().isOk());
-		// @formatter:on
-	}
+    }
 
-	@Test
-	void publicAnnotationImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
-		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
-		this.mockMvc.perform(get("/public/annotation/implicit")
-				.with(oauth2Login()))
-				.andExpect(status().isOk());
-		// @formatter:on
-	}
+    @Test
+    void annotationImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
+        web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
 
-	@Configuration
-	static class WebClientConfig {
+        this.mockMvc.perform(get("/annotation/implicit")
+                        .with(oauth2Login()))
+                .andExpect(status().isOk());
 
-		@Bean
-		WebClient web() {
-			return WebClient.create(web.url("/").toString());
-		}
+    }
 
-		@Bean
-		OAuth2AuthorizedClientRepository authorizedClientRepository() {
-			return new HttpSessionOAuth2AuthorizedClientRepository();
-		}
+    @Test
+    void publicAnnotationExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
+        web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
 
-	}
+        this.mockMvc.perform(get("/public/annotation/explicit")
+                        .with(oauth2Client("client-id")))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void publicAnnotationImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
+        web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
+
+        this.mockMvc.perform(get("/public/annotation/implicit")
+                        .with(oauth2Login()))
+                .andExpect(status().isOk());
+
+    }
+
+    @Configuration
+    static class WebClientConfig {
+
+        @Bean
+        WebClient web() {
+            return WebClient.create(web.url("/").toString());
+        }
+
+        @Bean
+        OAuth2AuthorizedClientRepository authorizedClientRepository() {
+            return new HttpSessionOAuth2AuthorizedClientRepository();
+        }
+
+    }
 
 }

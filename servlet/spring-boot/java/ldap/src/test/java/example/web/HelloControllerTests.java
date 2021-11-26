@@ -43,28 +43,28 @@ public class HelloControllerTests {
 
 	@Test
 	void rootWhenAuthenticatedThenSaysHelloUser() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(get("/")
 			.with(httpBasic("user", "password")))
 			.andExpect(content().string("Hello, user!"));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void rootWhenUnauthenticatedThen401() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(get("/"))
 				.andExpect(status().isUnauthorized());
-		// @formatter:on
+		
 	}
 
 	@Test
 	void tokenWhenBadCredentialsThen401() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(get("/")
 				.with(httpBasic("user", "passwerd")))
 				.andExpect(status().isUnauthorized());
-		// @formatter:on
+		
 	}
 
 }

@@ -57,7 +57,7 @@ public class OAuth2LoginControllerTests {
 	void setup() {
 		ServerOAuth2AuthorizedClientRepository authorizedClientRepository = new WebSessionServerOAuth2AuthorizedClientRepository();
 
-		// @formatter:off
+		
 		this.rest = WebTestClient
 			.bindToController(this.controller)
 			.apply(springSecurity())
@@ -68,18 +68,18 @@ public class OAuth2LoginControllerTests {
 			})
 			.viewResolvers((c) -> c.viewResolver(this.viewResolver))
 			.build();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void indexGreetsAuthenticatedUser() {
-		// @formatter:off
+		
 		this.rest.mutateWith(mockOAuth2Login())
 			.get()
 			.uri("/")
 			.exchange()
 			.expectBody(String.class).value(containsString("user"));
-		// @formatter:on
+		
 	}
 
 }

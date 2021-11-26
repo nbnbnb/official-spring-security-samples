@@ -43,7 +43,7 @@ import org.springframework.http.MediaType;
  */
 public class MockWebServerPropertySource extends PropertySource<MockWebServer> implements DisposableBean {
 
-	// @formatter:off
+	
 	private static final MockResponse NO_SCOPES_RESPONSE = response(
 			"{\n" +
 					"      \"active\": true,\n" +
@@ -51,9 +51,9 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 					"     }",
 			200
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse MESSASGE_READ_SCOPE_RESPONSE = response(
 			"{\n" +
 					"      \"active\": true,\n" +
@@ -62,31 +62,31 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 					"     }",
 			200
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse INACTIVE_RESPONSE = response(
 			"{\n" +
 					"      \"active\": false,\n" +
 					"     }",
 			200
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse BAD_REQUEST_RESPONSE = response(
 			"{ \"message\" : \"This mock authorization server requires a username and password of " +
 					"client/secret and a POST body of token=${token}\" }",
 			400
 	);
-	// @formatter:on
+	
 
-	// @formatter:off
+	
 	private static final MockResponse NOT_FOUND_RESPONSE = response(
 			"{ \"message\" : \"This mock authorization server responds to just one request: POST /introspect.\" }",
 			404
 	);
-	// @formatter:on
+	
 
 	/**
 	 * Name of the random {@link PropertySource}.
@@ -153,7 +153,7 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 
 	private MockResponse doDispatch(RecordedRequest request) {
 		if ("/introspect".equals(request.getPath())) {
-			// @formatter:off
+			
 			return Optional.ofNullable(request.getHeader(HttpHeaders.AUTHORIZATION))
 					.filter((authorization) -> isAuthorized(authorization, "client", "secret"))
 					.map((authorization) -> parseBody(request.getBody()))
@@ -170,7 +170,7 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 						}
 					})
 					.orElse(BAD_REQUEST_RESPONSE);
-			// @formatter:on
+			
 		}
 
 		return NOT_FOUND_RESPONSE;
@@ -182,20 +182,20 @@ public class MockWebServerPropertySource extends PropertySource<MockWebServer> i
 	}
 
 	private Map<String, Object> parseBody(Buffer body) {
-		// @formatter:off
+		
 		return Stream.of(body.readUtf8().split("&"))
 				.map((parameter) -> parameter.split("="))
 				.collect(Collectors.toMap((parts) -> parts[0], (parts) -> parts[1]));
-		// @formatter:on
+		
 	}
 
 	private static MockResponse response(String body, int status) {
-		// @formatter:off
+		
 		return new MockResponse()
 				.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.setResponseCode(status)
 				.setBody(body);
-		// @formatter:on
+		
 	}
 
 }

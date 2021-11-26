@@ -47,7 +47,7 @@ public class MfaApplicationTests {
 
 	@Test
 	void mfaWhenAllFactorsSucceedMatchesThenWorks() throws Exception {
-		// @formatter:off
+		
 		MvcResult result = this.mockMvc.perform(formLogin()
 				.user("user@example.com")
 				.password("password"))
@@ -68,12 +68,12 @@ public class MfaApplicationTests {
 				.param("answer", "smith")
 				.with(csrf()))
 				.andExpect(redirectedUrl("/"));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void mfaWhenBadCredsThenStillRequestsRemainingFactorsAndRedirects() throws Exception {
-		// @formatter:off
+		
 		MvcResult result = this.mockMvc.perform(formLogin()
 				.user("user@example.com")
 				.password("wrongpassword"))
@@ -94,12 +94,12 @@ public class MfaApplicationTests {
 				.param("answer", "smith")
 				.with(csrf()))
 				.andExpect(redirectedUrl("/login?error"));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void mfaWhenWrongCodeThenRedirects() throws Exception {
-		// @formatter:off
+		
 		MvcResult result = this.mockMvc.perform(formLogin()
 				.user("user@example.com")
 				.password("password"))
@@ -120,12 +120,12 @@ public class MfaApplicationTests {
 				.param("answer", "smith")
 				.with(csrf()))
 				.andExpect(redirectedUrl("/login?error"));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void mfaWhenWrongSecurityAnswerThenRedirects() throws Exception {
-		// @formatter:off
+		
 		MvcResult result = this.mockMvc.perform(formLogin()
 				.user("user@example.com")
 				.password("password"))
@@ -146,12 +146,12 @@ public class MfaApplicationTests {
 				.param("answer", "wilson")
 				.with(csrf()))
 				.andExpect(redirectedUrl("/login?error"));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void mfaWhenInProcessThenCantViewOtherPages() throws Exception {
-		// @formatter:off
+		
 		MvcResult result = this.mockMvc.perform(formLogin()
 				.user("user@example.com")
 				.password("password"))
@@ -182,7 +182,7 @@ public class MfaApplicationTests {
 		this.mockMvc.perform(get("/")
 				.session((MockHttpSession) session))
 				.andExpect(redirectedUrl("http://localhost/login"));
-		// @formatter:on
+		
 	}
 
 }

@@ -39,24 +39,24 @@ public class WebfluxX509Application {
 
 	@Bean
 	public ReactiveUserDetailsService reactiveUserDetailsService() {
-		// @formatter:off
+		
 		UserDetails client = User.withUsername("client")
 			.password("")
 			.roles("USER")
 			.build();
-		// @formatter:on
+		
 		return new MapReactiveUserDetailsService(client);
 	}
 
 	@Bean
 	public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-		// @formatter:off
+		
 		http
 			.x509(withDefaults())
 			.authorizeExchange((authorize) -> authorize
 				.anyExchange().authenticated()
 			);
-		// @formatter:on
+		
 
 		return http.build();
 	}

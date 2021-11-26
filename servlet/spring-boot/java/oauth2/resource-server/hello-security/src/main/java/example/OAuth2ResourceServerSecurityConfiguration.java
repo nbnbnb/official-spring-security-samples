@@ -38,7 +38,7 @@ public class OAuth2ResourceServerSecurityConfiguration extends WebSecurityConfig
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// @formatter:off
+		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
 				.antMatchers(HttpMethod.GET, "/message/**").hasAuthority("SCOPE_message:read")
@@ -46,7 +46,7 @@ public class OAuth2ResourceServerSecurityConfiguration extends WebSecurityConfig
 				.anyRequest().authenticated()
 			)
 			.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-		// @formatter:on
+		
 	}
 
 	@Bean

@@ -56,7 +56,7 @@ public class X509Tests {
 		ClassPathResource serverKeystore = new ClassPathResource("/certs/server.p12");
 		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
 		keyStore.load(serverKeystore.getInputStream(), "password".toCharArray());
-		// @formatter:off
+		
 		SSLContext sslContext = SSLContexts.custom()
 				.loadKeyMaterial(keyStore, "password".toCharArray(), (aliases, socket) -> "client")
 				.loadTrustMaterial(keyStore, null)
@@ -66,7 +66,7 @@ public class X509Tests {
 				new String[]{"TLSv1.2", "TLSv1.1"},
 				null,
 				SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-		// @formatter:on
+		
 
 		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(socketFactory).build();
 		ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);

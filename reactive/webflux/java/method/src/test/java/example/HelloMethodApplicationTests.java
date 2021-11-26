@@ -38,57 +38,57 @@ public class HelloMethodApplicationTests {
 
 	@Test
 	void messageWhenNotAuthenticatedThenUnAuthorized() {
-		// @formatter:off
+		
 		this.rest.get()
 				.uri("/message")
 				.exchange().
 				expectStatus().isUnauthorized();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser
 	void messageWhenAuthenticatedThenOk() {
-		// @formatter:off
+		
 		this.rest.get()
 				.uri("/message")
 				.exchange()
 				.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	// --- /secret ---
 
 	@Test
 	void secretWhenNotAuthenticatedThenUnAuthorized() {
-		// @formatter:off
+		
 		this.rest.get()
 				.uri("/secret")
 				.exchange()
 				.expectStatus().isUnauthorized();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser
 	void secretWhenNotAuthorizedThenForbidden() {
-		// @formatter:off
+		
 		this.rest.get()
 				.uri("/secret")
 				.exchange()
 				.expectStatus().isForbidden();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void secretWhenAuthorizedThenOk() {
-		// @formatter:off
+		
 		this.rest.get()
 				.uri("/secret")
 				.exchange()
 				.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 }

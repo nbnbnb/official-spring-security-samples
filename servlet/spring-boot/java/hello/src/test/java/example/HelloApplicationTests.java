@@ -37,10 +37,10 @@ public class HelloApplicationTests {
 
 	@Test
 	void indexThenOk() throws Exception {
-		// @formatter:off
+		
 		this.mockMvc.perform(get("/"))
 				.andExpect(status().isOk());
-		// @formatter:on
+		
 	}
 
 }

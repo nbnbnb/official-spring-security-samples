@@ -38,52 +38,52 @@ public class MessageServiceTests {
 
 	@Test
 	void findMessageWhenNotAuthenticatedThenDenied() {
-		// @formatter:off
+		
 		StepVerifier.create(this.messages.findMessage())
 				.expectError(AccessDeniedException.class)
 				.verify();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser
 	void findMessageWhenUserThenDenied() {
-		// @formatter:off
+		
 		StepVerifier.create(this.messages.findMessage())
 				.expectNext("Hello User!")
 				.verifyComplete();
-		// @formatter:on
+		
 	}
 
 	// -- findSecretMessage ---
 
 	@Test
 	void findSecretMessageWhenNotAuthenticatedThenDenied() {
-		// @formatter:off
+		
 		StepVerifier.create(this.messages.findSecretMessage())
 				.expectError(AccessDeniedException.class)
 				.verify();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser
 	void findSecretMessageWhenNotAuthorizedThenDenied() {
-		// @formatter:off
+		
 		StepVerifier.create(this.messages.findSecretMessage())
 				.expectError(AccessDeniedException.class)
 				.verify();
-		// @formatter:on
+		
 	}
 
 	@Test
 	@WithMockUser(roles = "ADMIN")
 	void findSecretMessageWhenAuthorizedThenSuccess() {
-		// @formatter:off
+		
 		StepVerifier.create(this.messages.findSecretMessage())
 				.expectNext("Hello Admin!")
 				.verifyComplete();
-		// @formatter:on
+		
 	}
 
 }

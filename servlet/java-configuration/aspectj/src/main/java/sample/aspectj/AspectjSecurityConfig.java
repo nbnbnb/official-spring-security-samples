@@ -44,7 +44,7 @@ public class AspectjSecurityConfig {
 		return new SecuredService();
 	}
 
-	// @formatter:off
+	
 	@Bean
 	public UserDetailsService userDetailsService() {
 		UserDetails user = User.withDefaultPasswordEncoder()
@@ -54,6 +54,6 @@ public class AspectjSecurityConfig {
 				.build();
 		return new InMemoryUserDetailsManager(user);
 	}
-	// @formatter:on
+	
 
 }

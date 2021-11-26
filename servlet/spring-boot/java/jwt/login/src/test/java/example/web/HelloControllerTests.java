@@ -42,7 +42,7 @@ public class HelloControllerTests {
 
 	@Test
 	void rootWhenAuthenticatedThenSaysHelloUser() throws Exception {
-		// @formatter:off
+		
 		MvcResult result = this.mvc.perform(post("/token")
 			.with(httpBasic("user", "password")))
 			.andExpect(status().isOk())
@@ -53,23 +53,23 @@ public class HelloControllerTests {
 		this.mvc.perform(get("/")
 			.header("Authorization", "Bearer " + token))
 			.andExpect(content().string("Hello, user!"));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void rootWhenUnauthenticatedThen401() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(get("/"))
 				.andExpect(status().isUnauthorized());
-		// @formatter:on
+		
 	}
 
 	@Test
 	void tokenWhenBadCredentialsThen401() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(post("/token"))
 				.andExpect(status().isUnauthorized());
-		// @formatter:on
+		
 	}
 
 }

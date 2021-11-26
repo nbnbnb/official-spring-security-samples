@@ -32,42 +32,42 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
  * @author Rob Winch
  */
 @Controller
-@RequestMapping(path = { "/annotation", "/public/annotation" })
+@RequestMapping(path = {"/annotation", "/public/annotation"})
 public class RegisteredOAuth2AuthorizedClientController {
 
-	private final WebClient webClient;
+    private final WebClient webClient;
 
-	public RegisteredOAuth2AuthorizedClientController(WebClient webClient) {
-		this.webClient = webClient;
-	}
+    public RegisteredOAuth2AuthorizedClientController(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
-	@GetMapping("/explicit")
-	String explicit(Model model,
-			@RegisteredOAuth2AuthorizedClient("client-id") OAuth2AuthorizedClient authorizedClient) {
-		// @formatter:off
-		String body = this.webClient
-				.get()
-				.attributes(oauth2AuthorizedClient(authorizedClient))
-				.retrieve()
-				.bodyToMono(String.class)
-				.block();
-		// @formatter:on
-		model.addAttribute("body", body);
-		return "response";
-	}
+    @GetMapping("/explicit")
+    String explicit(Model model,
+                    @RegisteredOAuth2AuthorizedClient("client-id") OAuth2AuthorizedClient authorizedClient) {
 
-	@GetMapping("/implicit")
-	String implicit(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) {
-		// @formatter:off
-		String body = this.webClient
-				.get()
-				.attributes(oauth2AuthorizedClient(authorizedClient))
-				.retrieve()
-				.bodyToMono(String.class)
-				.block();
-		// @formatter:on
-		model.addAttribute("body", body);
-		return "response";
-	}
+        String body = this.webClient
+                .get()
+                .attributes(oauth2AuthorizedClient(authorizedClient))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        model.addAttribute("body", body);
+        return "response";
+    }
+
+    @GetMapping("/implicit")
+    String implicit(Model model, @RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) {
+
+        String body = this.webClient
+                .get()
+                .attributes(oauth2AuthorizedClient(authorizedClient))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+
+        model.addAttribute("body", body);
+        return "response";
+    }
 
 }

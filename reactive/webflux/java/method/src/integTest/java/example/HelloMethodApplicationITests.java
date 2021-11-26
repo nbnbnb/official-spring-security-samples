@@ -40,58 +40,58 @@ public class HelloMethodApplicationITests {
 
 	@Test
 	void messageWhenNotAuthenticated() {
-		// @formatter:off
+		
 		this.rest.get()
 				.uri("/message")
 				.exchange()
 				.expectStatus().isUnauthorized();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageWhenUserThenOk() {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/message")
 			.headers(userCredentials())
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	// --- /secret ---
 
 	@Test
 	void secretWhenNotAuthenticated() {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/secret")
 			.exchange()
 			.expectStatus().isUnauthorized();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void secretWhenUserThenForbidden() {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/secret")
 			.headers(userCredentials())
 			.exchange()
 			.expectStatus().isForbidden();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void secretWhenAdminThenOk() {
-		// @formatter:off
+		
 		this.rest.get()
 			.uri("/secret")
 			.headers(adminCredentials())
 			.exchange()
 			.expectStatus().isOk()
 			.expectBody(String.class).isEqualTo("Hello Admin!");
-		// @formatter:on
+		
 	}
 
 	private Consumer<HttpHeaders> userCredentials() {

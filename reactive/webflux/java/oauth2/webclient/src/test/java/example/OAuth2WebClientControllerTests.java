@@ -58,50 +58,50 @@ public class OAuth2WebClientControllerTests {
 	@Test
 	void explicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Login())
 			.mutateWith(mockOAuth2Client("client-id"))
 			.get()
 			.uri("/webclient/explicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void implicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Login())
 			.get()
 			.uri("/webclient/implicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void publicExplicitWhenAuthenticatedThenUsesClientIdRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Client("client-id"))
 			.get()
 			.uri("/public/webclient/explicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Test
 	void publicImplicitWhenAuthenticatedThenUsesDefaultRegistration() throws Exception {
 		web.enqueue(new MockResponse().setBody("body").setResponseCode(200));
-		// @formatter:off
+		
 		this.client.mutateWith(mockOAuth2Login())
 			.get()
 			.uri("/public/webclient/implicit")
 			.exchange()
 			.expectStatus().isOk();
-		// @formatter:on
+		
 	}
 
 	@Configuration

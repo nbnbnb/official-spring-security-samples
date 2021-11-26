@@ -35,12 +35,12 @@ public class OAuth2WebClientWebFluxApplicationTests {
 
 	@Test
 	void annotationExplicitWhenNotAuthenticatedThenLoginRequested() {
-		// @formatter:off
+		
 		this.client.get()
 			.uri("/annotation/explicit")
 			.exchange()
 			.expectStatus().is3xxRedirection();
-		// @formatter:on
+		
 	}
 
 }

@@ -37,25 +37,25 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http) {
-		// @formatter:off
+		
 		http
 			.authorizeExchange((authorize) -> authorize
 				.anyExchange().authenticated()
 			)
 			.formLogin(withDefaults());
-		// @formatter:on
+		
 		return http.build();
 	}
 
 	@Bean
 	MapReactiveUserDetailsService userDetailsService() {
-		// @formatter:off
+		
 		UserDetails user = User.withDefaultPasswordEncoder()
 			.username("user")
 			.password("password")
 			.roles("USER")
 			.build();
-		// @formatter:on
+		
 		return new MapReactiveUserDetailsService(user);
 	}
 

@@ -48,7 +48,7 @@ public class WebfluxX509ApplicationITest {
 	@Test
 	void shouldExtractAuthenticationFromCertificate() throws Exception {
 		WebTestClient webTestClient = createWebTestClientWithClientCertificate();
-		// @formatter:off
+		
 		webTestClient.get()
 			.uri("/me")
 			.exchange()
@@ -58,7 +58,7 @@ public class WebfluxX509ApplicationITest {
 				String responseBody = new String(result.getResponseBody());
 				assertThat(responseBody).contains("Hello, client");
 			});
-		// @formatter:on
+		
 	}
 
 	private WebTestClient createWebTestClientWithClientCertificate() throws KeyStoreException, IOException,
@@ -75,22 +75,22 @@ public class WebfluxX509ApplicationITest {
 				new KeyStore.PasswordProtection("password".toCharArray()));
 		PrivateKey clientKey = ((KeyStore.PrivateKeyEntry) keyStoreEntry).getPrivateKey();
 
-		// @formatter:off
+		
 		SslContextBuilder sslContextBuilder = SslContextBuilder
 			.forClient().clientAuth(ClientAuth.REQUIRE)
 			.trustManager(devCA)
 			.keyManager(clientKey, clientCrt);
-		// @formatter:on
+		
 
 		HttpClient httpClient = HttpClient.create()
 				.secure((sslContextSpec) -> sslContextSpec.sslContext(sslContextBuilder));
 		ClientHttpConnector httpConnector = new ReactorClientHttpConnector(httpClient);
 
-		// @formatter:off
+		
 		return WebTestClient.bindToServer(httpConnector)
 			.baseUrl("https://localhost:" + this.port)
 			.build();
-		// @formatter:on
+		
 	}
 
 }

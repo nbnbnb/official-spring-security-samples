@@ -43,17 +43,17 @@ public class OAuth2ResourceServerControllerTests {
 
 	@Test
 	void indexGreetsAuthenticatedUser() throws Exception {
-		// @formatter:off
+		
 		SecurityMockMvcRequestPostProcessors.OpaqueTokenRequestPostProcessor token = opaqueToken()
 				.attributes((a) -> a.put("sub", "ch4mpy"));
 		this.mvc.perform(get("/").with(token))
 				.andExpect(content().string(is("Hello, ch4mpy!")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanBeReadWithScopeMessageReadAuthority() throws Exception {
-		// @formatter:off
+		
 		SecurityMockMvcRequestPostProcessors.OpaqueTokenRequestPostProcessor token = opaqueToken()
 				.attributes((a) -> a.put("scope", "message:read"));
 		this.mvc.perform(get("/message").with(token))
@@ -62,25 +62,25 @@ public class OAuth2ResourceServerControllerTests {
 		this.mvc.perform(get("/message")
 				.with(jwt().authorities(new SimpleGrantedAuthority(("SCOPE_message:read")))))
 				.andExpect(content().string(is("secret message")));
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanNotBeReadWithoutScopeMessageReadAuthority() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(get("/message").with(opaqueToken()))
 				.andExpect(status().isForbidden());
-		// @formatter:on
+		
 	}
 
 	@Test
 	void messageCanNotBeCreatedWithoutAnyScope() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(post("/message")
 				.content("Hello message")
 				.with(opaqueToken()))
 				.andExpect(status().isForbidden());
-		// @formatter:on
+		
 	}
 
 	@Test
@@ -92,13 +92,13 @@ public class OAuth2ResourceServerControllerTests {
 
 	@Test
 	void messageCanBeCreatedWithScopeMessageWriteAuthority() throws Exception {
-		// @formatter:off
+		
 		this.mvc.perform(post("/message")
 				.content("Hello message")
 				.with(opaqueToken().authorities(new SimpleGrantedAuthority("SCOPE_message:write"))))
 				.andExpect(status().isOk())
 				.andExpect(content().string(is("Message was created. Content: Hello message")));
-		// @formatter:on
+		
 	}
 
 }

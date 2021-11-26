@@ -43,25 +43,25 @@ public class OAuth2WebClientController {
 
 	@GetMapping("/explicit")
 	String explicit(Model model) {
-		// @formatter:off
+		
 		Mono<String> body = this.webClient
 			.get()
 			.attributes(clientRegistrationId("client-id"))
 			.retrieve()
 			.bodyToMono(String.class);
-		// @formatter:on
+		
 		model.addAttribute("body", body);
 		return "response";
 	}
 
 	@GetMapping("/implicit")
 	String implicit(Model model) {
-		// @formatter:off
+		
 		Mono<String> body = this.webClient
 			.get()
 			.retrieve()
 			.bodyToMono(String.class);
-		// @formatter:on
+		
 		model.addAttribute("body", body);
 		return "response";
 	}

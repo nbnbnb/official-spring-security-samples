@@ -35,7 +35,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-		// @formatter:off
+		
 		http
 			.authorizeExchange((authorize) -> authorize
 				.pathMatchers(HttpMethod.GET, "/message/**").hasAuthority("SCOPE_message:read")
@@ -45,7 +45,7 @@ public class SecurityConfiguration {
 			.oauth2ResourceServer((resourceServer) -> resourceServer
 				.jwt(withDefaults())
 			);
-		// @formatter:on
+		
 		return http.build();
 	}
 
