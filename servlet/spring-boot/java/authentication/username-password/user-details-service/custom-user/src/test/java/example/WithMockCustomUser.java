@@ -25,7 +25,7 @@ import org.springframework.security.test.context.support.WithSecurityContext;
 @WithSecurityContext(factory = WithMockCustomUserSecurityContextFactory.class)
 public @interface WithMockCustomUser {
 
-	String email() default "user@example.com";
+	String email() default "anonymous@example.com";
 
 	int id() default 1;
 

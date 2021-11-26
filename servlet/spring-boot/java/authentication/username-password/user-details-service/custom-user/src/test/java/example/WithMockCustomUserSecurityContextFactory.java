@@ -24,20 +24,31 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 
 public class WithMockCustomUserSecurityContextFactory implements WithSecurityContextFactory<WithMockCustomUser> {
 
-	@Override
-	public SecurityContext createSecurityContext(WithMockCustomUser mockCustomUser) {
-		String username = mockCustomUser.email();
-		// a stub CustomUserRepository that returns the user defined in the annotation
-		CustomUserRepository userRepository = (email) -> new CustomUser(mockCustomUser.id(), username, "");
-		// CustomUserRepositoryUserDetailsService ensures our UserDetails is consistent
-		// with our production application
-		CustomUserRepositoryUserDetailsService userDetailsService = new CustomUserRepositoryUserDetailsService(
-				userRepository);
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-		securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(userDetails,
-				userDetails.getPassword(), userDetails.getAuthorities()));
-		return securityContext;
-	}
+    @Override
+    public SecurityContext createSecurityContext(WithMockCustomUser mockCustomUser) {
+
+        String username = mockCustomUser.email();
+
+        // Mock 的接口实现
+        // a stub CustomUserRepository that returns the user defined in the annotation
+        CustomUserRepository userRepository = (email) -> new CustomUser(mockCustomUser.id(), username, "");
+
+        // 传递 Mock 的接口实现
+        // CustomUserRepositoryUserDetailsService ensures our UserDetails is consistent
+        // with our production application
+        CustomUserRepositoryUserDetailsService userDetailsService = new CustomUserRepositoryUserDetailsService(userRepository);
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        // 首先创建一个新的 SecurityContext
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+
+        // 设置 Authentication
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(userDetails,
+                userDetails.getPassword(), userDetails.getAuthorities()));
+
+        return securityContext;
+
+    }
 
 }

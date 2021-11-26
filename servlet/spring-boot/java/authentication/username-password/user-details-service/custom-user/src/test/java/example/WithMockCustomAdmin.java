@@ -16,6 +16,11 @@
 
 package example;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+// 直接注解中赋值
 @WithMockCustomUser(email = "admin@example.com")
 public @interface WithMockCustomAdmin {
 

@@ -54,6 +54,8 @@ public class UserDetailsServiceApplicationTests {
      * like {@link #userWhenWithMockCustomUserThenOk()}.
      */
     @Test
+    // Spring API
+    // 模拟登录用户
     @WithUserDetails("user@example.com")
     void userWhenWithUserDetailsThenOk() throws Exception {
 
@@ -68,14 +70,29 @@ public class UserDetailsServiceApplicationTests {
      * testing. It is a little extra code, but makes it less error prone.
      */
     @Test
+    // 自定义 API
+    // 包转 @WithUserDetails("user@example.com")
     @WithUser
     void userWhenWithUserThenOk() throws Exception {
-        // @formatter:off
+
         this.mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(1)));
-        // @formatter:on
+
     }
+
+    @Test
+    // 自定义 API
+    // 使用 WithMockCustomUserSecurityContextFactory 进行模拟用户
+    @WithMockCustomUser
+    void userWhenWithMockCustomUserThenOkByAnonymous() throws Exception {
+
+        this.mockMvc.perform(get("/user"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email", equalTo("anonymous@example.com")));
+
+    }
+
 
     /**
      * WithMockCustomUser is a little more code then using {@link WithUserDetails}, but we
@@ -85,13 +102,15 @@ public class UserDetailsServiceApplicationTests {
      * use it for testing here.
      */
     @Test
-    @WithMockCustomUser(email = "admin@example.com")
+    // 自定义 API
+    // 使用 WithMockCustomUserSecurityContextFactory 进行模拟用户
+    @WithMockCustomUser(email = "user@example.com")
     void userWhenWithMockCustomUserThenOk() throws Exception {
-        // @formatter:off
+
         this.mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email", equalTo("admin@example.com")));
-        // @formatter:on
+                .andExpect(jsonPath("$.email", equalTo("user@example.com")));
+
     }
 
     /**
@@ -100,13 +119,15 @@ public class UserDetailsServiceApplicationTests {
      * error prone.
      */
     @Test
-    @WithMockCustomUser(email = "admin@example.com")
+    // 自定义 API
+    // 包装 @WithMockCustomUser 注解
+    @WithMockCustomAdmin
     void userWhenWithMockCustomAdminThenOk() throws Exception {
-        // @formatter:off
+
         this.mockMvc.perform(get("/user"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email", equalTo("admin@example.com")));
-        // @formatter:on
+
     }
 
 }
